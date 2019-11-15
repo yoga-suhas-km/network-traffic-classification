@@ -25,7 +25,7 @@ from keras.layers import Flatten, LSTM, Conv1D, MaxPooling1D, Dropout, Dense
 from keras.utils import to_categorical
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 
 length = 2000
 num_epoch = 10
@@ -109,9 +109,9 @@ def main():
     model = build_model(X_train, y_train, X_test, y_test, num_epoch, batch_size)
 
     # predict crisp classes for test set
+    y_pred_t = model.predict(X_test, batch_size=32, verbose=1)
+    y_pred_bool = np.argmax(y_pred_t, axis=1)
     y_pred = model.predict_classes(X_test)
-    #print(yhat_probs.shape)
-    #print(y_pred.shape)
 
 
     # accuracy: (tp + tn) / (p + n)
@@ -127,6 +127,8 @@ def main():
     f1 = f1_score(y_test, y_pred, average='weighted',labels=np.unique(y_pred))
     print('F1 score: %f' % f1)
     
+    print(classification_report(y_test, y_pred_bool))
+
 
 if __name__ == '__main__':
     main()
