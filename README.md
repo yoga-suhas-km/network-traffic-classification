@@ -13,4 +13,15 @@ A network traffic classifier (NTC) is an important part of current network monit
 
 ![](result/result.PNG)
 
+# steps to run the code
+
+1) open new notebook in google colab
+**url** *https://colab.research.google.com/*
+
+2) run the command
+$*!git clone https://github.com/yoga-suhas-km/network-traffic-classification.git*
+
+3) run any model using $*!python filename.py*
+
 **Soon I will add my work on top of the paper :relieved: :thumbsup:** 
+
