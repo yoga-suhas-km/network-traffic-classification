@@ -21,7 +21,9 @@ A network traffic classifier (NTC) is an important part of current network monit
 2) run the command
 $*!git clone https://github.com/yoga-suhas-km/network-traffic-classification.git*
 
-3) run any model using $*!python filename.py*
+3) $cd network-traffic-classification
+
+4) run any model using $*!python filename.py*
 
 **Soon I will add my work on top of the paper :relieved: :thumbsup:** 
 
