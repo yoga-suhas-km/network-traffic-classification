@@ -1,6 +1,6 @@
 # network-traffic-classification
 
-**This is work is based on**
+**The project is simulation of the below paper**
 
 *M. Lopez-Martin, B. Carro, A. Sanchez-Esguevillas and J. #Lloret, "Network Traffic Classifier With Convolutional andRecurrent Neural Networks for Internet of Things," in IEEE #Access, vol. 5, pp. 18042-18050, 2017.doi: 10.1109/ACCESS.2017.2747560*
 
