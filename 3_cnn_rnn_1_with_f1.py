@@ -27,9 +27,10 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 
-length = 2000
-num_epoch = 10
+length = 1000
+num_epoch = 50
 batch_size = 32
+test_size_t = 0.3
 index = iter(range(5))
 NTC_LABELS = {}
 
@@ -38,10 +39,10 @@ def pad_normalize(s):
     1000 bytes, pad zeroes at the end. Then convert to integers and normalize."""
 
     if len(s) < length:
-        s += '00' * (length-len(s))
+        s += '0' * (length-len(s))
     else:
         s = s[:length]
-    return [float(int(s[i]+s[i+1], 16)/255) for i in range(0, length, 2)]
+    return [float(int(s[i], 16)/255) for i in range(0, length)]
 
 
 def fetch_file(file_name, label):
@@ -67,7 +68,7 @@ def build_model(X_train, y_train, X_test, y_test, num_epoch, batch_size):
     activation = 'relu'
     num_classes = len(NTC_LABELS)
     model = Sequential()
-    model.add(Conv1D(32, strides=1, input_shape=(1000, 1), activation=activation, kernel_size=3, padding='valid'))
+    model.add(Conv1D(32, strides=1, input_shape=(length, 1), activation=activation, kernel_size=3, padding='valid'))
     model.add(MaxPooling1D(3, strides=1, padding='valid'))
     model.add(BatchNormalization())
     model.add(Conv1D(64, strides=1, activation=activation, kernel_size=3, padding='valid'))
@@ -87,8 +88,7 @@ def build_model(X_train, y_train, X_test, y_test, num_epoch, batch_size):
 def main():
     df = preprocess(path='Dataset')
     df['data'] = df['data'].apply(pad_normalize)
-    X_train, X_test, y_train, y_test = train_test_split(df['data'], df['label'],
-                                                        test_size=0.3, random_state=4)
+    X_train, X_test, y_train, y_test = train_test_split(df['data'], df['label'],test_size = test_size_t, random_state=4)
     X_train = X_train.apply(pd.Series)
     X_test = X_test.apply(pd.Series)
     X_train = X_train.values.reshape(X_train.shape[0], X_train.shape[1], 1)
@@ -116,7 +116,7 @@ def main():
     f1 = f1_score(y_test, y_pred, average='weighted',labels=np.unique(y_pred))
     print('F1 score: %f' % f1)
     
-    print(classification_report(y_test, y_pred_bool))
+    print(classification_report(y_test, y_pred_bool,labels=np.unique(y_pred_bool)))
 
 
 if __name__ == '__main__':
